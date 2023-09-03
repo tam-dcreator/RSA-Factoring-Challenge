@@ -1,0 +1,30 @@
+#!/usr/bin/python
+from sys import stderr, argv
+
+
+def factorize(filename):
+    """Function that factors numbers from a file into products of two
+smaller numbers. Takes the filename as input."""
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                value = int(line)
+                for div in range(2, value):
+                    if value % div == 0:
+                        print("{:d}={:d}*{:d}".format(value, value//div, div))
+                        break
+    except FileNotFoundError:
+        stderr.write(f"File not found: {filename}\n")
+    except ValueError:
+        stderr.write(f"Invalid input in file: {filename}\n")
+    except Exception as e:
+        stderr.write(f"An error occurred: {str(e)}\n")
+        exit(1)
+
+
+if __name__ == "__main__":
+    if len(argv) != 2:
+        stderr.write("Usage: ./factors filename\n")
+        exit(1)
+
+    factorize(argv[1])
