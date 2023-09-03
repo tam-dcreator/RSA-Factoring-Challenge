@@ -28,14 +28,14 @@ smaller numbers. Takes the filename as input."""
             for line in file:
                 value = int(line)
                 factors = pollards_rho(value)
-                # for factors above 1000, we use the pollard_rho's factors
-                if factors[0] >= 1000:
+                # for factors above 100, we use the pollard_rho's factors
+                if factors[0] >= 100:
                     print("{:d}={:d}*{:d}"
                           .format(value, factors[1], factors[0]))
                 else:
-                    # For factors less than 1000, we run a simple iteration
+                    # For factors less than 100, we run a simple iteration
                     # This was done to match the output requirement
-                    for div in range(2, 1000):
+                    for div in range(2, 100):
                         if value % div == 0:
                             print("{:d}={:d}*{:d}"
                                   .format(value, value // div, div))
