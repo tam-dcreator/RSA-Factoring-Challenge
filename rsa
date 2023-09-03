@@ -32,6 +32,7 @@ def pollards_rho(n):
             return [n // prime, prime]
 
     def f(num):
+        """Function that returns a random number"""
         return (num * num + 1) % n
 
     x, y, d = 2, 2, 1
