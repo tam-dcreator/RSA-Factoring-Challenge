@@ -1,0 +1,63 @@
+#!/usr/bin/python
+from sys import stderr, argv
+from math import isqrt, gcd
+
+
+def is_square(n):
+    """Function that checks if a number is a square"""
+    x = isqrt(n)
+    if (x * x) == n:
+        return True
+    return False
+
+
+def pollards_rho(n):
+    """Basic Implementation of the pollards_rho algorithm for factorization.
+    The function takes an integer and returns a list of prime numbers"""
+    if n <= 1:
+        return [n]
+
+    # Check divisibility by small primes first
+    for prime in [2, 3, 5, 7, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]:
+        if n % prime == 0:
+            return [prime, n // prime]
+
+    def f(num):
+        return (num * num + 1) % n
+
+    x, y, d = 2, 2, 1
+    while d == 1:
+        x = f(x)
+        y = f(f(y))
+        d = gcd(abs(x - y), n)
+    return [d, n // d]
+
+
+def factors(filename):
+    """Function that factors a number from a file into products of two
+smaller numbers. Takes the filename as input."""
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                val = int(line)
+                if is_square(val):
+                    factor = [isqrt(val), isqrt(val)]
+                else:
+                    factor = pollards_rho(val)
+                print("{:d}={:d}*{:d}".format(val, factor[1], factor[0]))
+
+    except FileNotFoundError:
+        stderr.write(f"File not found: {filename}\n")
+    except ValueError:
+        stderr.write(f"Invalid input in file: {filename}\n")
+    except Exception as e:
+        stderr.write(f"An error occurred: {str(e)}\n")
+        exit(1)
+
+
+if __name__ == "__main__":
+    if len(argv) != 2:
+        stderr.write("Usage: ./factors filename\n")
+        exit(1)
+
+    factors(argv[1])
