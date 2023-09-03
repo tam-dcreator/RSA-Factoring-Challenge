@@ -35,5 +35,5 @@ For other unexpected errors, you will receive a generic error message.
 
 ## Acknowledgments
 
-    -Thanks to the Python community for creating such a versatile and powerful programming language.
-    -<p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA Cryptography</a> for its foundational concepts in modern cyrptography.
+- Thanks to the Python community for creating such a versatile and powerful programming language.
+- <p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA Cryptography</a> for its foundational concepts in modern cyrptography.
