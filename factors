@@ -1,5 +1,23 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 from sys import stderr, argv
+from math import gcd
+
+
+def pollards_rho(n):
+    """Basic Implementation of the pollards_rho algorithm for factorization.
+    The function takes an integer and returns a list of prime numbers"""
+    if n <= 1:
+        return [n]
+
+    def f(num):
+        return (num * num + 1) % n
+
+    x, y, d = 2, 2, 1
+    while d == 1:
+        x = f(x)
+        y = f(f(y))
+        d = gcd(abs(x - y), n)
+    return [d, n // d]
 
 
 def factorize(filename):
@@ -9,10 +27,20 @@ smaller numbers. Takes the filename as input."""
         with open(filename, "r") as file:
             for line in file:
                 value = int(line)
-                for div in range(2, value):
-                    if value % div == 0:
-                        print("{:d}={:d}*{:d}".format(value, value//div, div))
-                        break
+                factors = pollards_rho(value)
+                # for factors above 1000, we use the pollard_rho's factors
+                if factors[0] >= 1000:
+                    print("{:d}={:d}*{:d}"
+                          .format(value, factors[1], factors[0]))
+                else:
+                    # For factors less than 1000, we run a simple iteration
+                    # This was done to match the output requirement
+                    for div in range(2, 1000):
+                        if value % div == 0:
+                            print("{:d}={:d}*{:d}"
+                                  .format(value, value // div, div))
+                            break
+
     except FileNotFoundError:
         stderr.write(f"File not found: {filename}\n")
     except ValueError:
